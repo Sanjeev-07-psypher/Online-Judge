@@ -26,12 +26,12 @@ const protect = async (req, res, next) => {
 
         console.log("DB NAME:", User.db.name);
 
-const allUsers = await User.find({});
-console.log("ALL USERS:", allUsers);
+// const allUsers = await User.find({});
+// console.log("ALL USERS:", allUsers);
 
 const user = await User.findById(decoded.id).select("-password");
 
-console.log("FOUND USER:", user);
+// console.log("FOUND USER:", user);
 
         if (!user) {
             return res.status(401).json({
