@@ -21,4 +21,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/submissions", submissionRoutes);
 
+console.log("App loaded");
 export default app;

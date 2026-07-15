@@ -31,10 +31,26 @@ const submissionSchema = new mongoose.Schema(
                 "Pending",
                 "Accepted",
                 "Wrong Answer",
+                "Compilation Error",
                 "Runtime Error",
                 "Time Limit Exceeded",
             ],
             default: "Pending",
+        },
+
+        executionTime: {
+            type: Number,
+            default: 0,
+        },
+
+        passedTestCases: {
+            type: Number,
+            default: 0,
+        },
+
+        totalTestCases: {
+            type: Number,
+            default: 0,
         },
     },
     {
@@ -42,6 +58,9 @@ const submissionSchema = new mongoose.Schema(
     }
 );
 
-const Submission = mongoose.model("Submission", submissionSchema);
+const Submission = mongoose.model(
+    "Submission",
+    submissionSchema
+);
 
 export default Submission;
