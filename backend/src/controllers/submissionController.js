@@ -1,4 +1,5 @@
 import Submission from "../models/Submission.js";
+import { judgeSubmission } from "../services/judgeService.js";
 
 export const createSubmission = async (req, res) => {
     try {
@@ -7,9 +8,15 @@ export const createSubmission = async (req, res) => {
             user: req.user._id,
         });
 
+        await judgeSubmission(submission._id);
+
+        const updatedSubmission = await Submission.findById(
+            submission._id
+        );
+
         res.status(201).json({
             success: true,
-            submission,
+            submission: updatedSubmission,
         });
     } catch (error) {
         res.status(500).json({

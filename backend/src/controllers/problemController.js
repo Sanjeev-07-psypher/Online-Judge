@@ -12,11 +12,14 @@ export const createProblem = async (req, res) => {
             problem,
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message,
-        });
-    }
+    console.error("CREATE PROBLEM ERROR:");
+    console.error(error);
+
+    res.status(500).json({
+        success: false,
+        message: error.message,
+    });
+}
 };
 
 export const getProblems = async (req, res) => {

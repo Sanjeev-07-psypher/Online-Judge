@@ -16,10 +16,16 @@ router.post("/", protect, createProblem);
 
 router.get("/", getProblems);
 
+router.get("/test", (req, res) => {
+    res.json({ message: "problem routes working" });
+});
+
 router.get("/:id", getProblemById);
 
 router.put("/:id", protect, updateProblem);
 
 router.delete("/:id", protect, deleteProblem);
+
+console.log("Problem routes loaded");
 
 export default router;
