@@ -3,9 +3,13 @@ import { judgeSubmission } from "../services/judgeService.js";
 
 export const createSubmission = async (req, res) => {
     try {
+        const { problemId, code, language } = req.body;
+
         const submission = await Submission.create({
-            ...req.body,
             user: req.user._id,
+            problem: problemId,
+            code,
+            language,
         });
 
         await judgeSubmission(submission._id);

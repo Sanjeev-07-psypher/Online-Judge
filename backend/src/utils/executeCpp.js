@@ -34,35 +34,57 @@ export const executeCpp = async (code, input) => {
         fs.writeFileSync(cppFilePath, code);
         fs.writeFileSync(inputFilePath, input);
 
-        await execPromise(
-            `g++ "${cppFilePath}" -o "${exeFilePath}"`
-        );
-
-        const { stdout } = await execPromise(
-            `"${exeFilePath}" < "${inputFilePath}"`,
-            {
-                timeout: 2000,
-            }
-        );
-
-        return {
-            success: true,
-            output: stdout,
-        };
-    } catch (error) {
-        if (error.killed) {
+        // =========================
+        // COMPILE PHASE
+        // =========================
+        try {
+            await execPromise(
+                `g++ "${cppFilePath}" -o "${exeFilePath}"`
+            );
+        } catch (error) {
             return {
                 success: false,
-                verdict: "Time Limit Exceeded",
-                error: error.message,
+                verdict: "Compilation Error",
+                error:
+                    error.stderr ||
+                    error.stdout ||
+                    error.message,
             };
         }
 
-        return {
-            success: false,
-            verdict: "Compilation Error",
-            error: error.stderr || error.message,
-        };
+        // =========================
+        // EXECUTION PHASE
+        // =========================
+        try {
+            const { stdout } = await execPromise(
+                `"${exeFilePath}" < "${inputFilePath}"`,
+                {
+                    timeout: 2000,
+                }
+            );
+
+            return {
+                success: true,
+                output: stdout,
+            };
+        } catch (error) {
+            if (error.killed) {
+                return {
+                    success: false,
+                    verdict: "Time Limit Exceeded",
+                    error: error.message,
+                };
+            }
+
+            return {
+                success: false,
+                verdict: "Runtime Error",
+                error:
+                    error.stderr ||
+                    error.stdout ||
+                    error.message,
+            };
+        }
     } finally {
         [
             cppFilePath,
