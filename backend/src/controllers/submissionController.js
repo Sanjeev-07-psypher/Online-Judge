@@ -1,5 +1,5 @@
 import Submission from "../models/Submission.js";
-import { judgeSubmission } from "../services/judgeService.js";
+import submissionQueue from "../queues/submissionQueue.js";
 
 export const createSubmission = async (req, res) => {
     try {

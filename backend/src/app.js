@@ -21,7 +21,6 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/submissions", submissionRoutes);
-app.use("/api/test-queue", testQueueRoutes);
 
 console.log("App loaded");
 export default app;

@@ -24,7 +24,7 @@ const protect = async (req, res, next) => {
             process.env.JWT_SECRET
         );
 
-        console.log("DB NAME:", User.db.name);
+        // console.log("DB NAME:", User.db.name);
 
 // const allUsers = await User.find({});
 // console.log("ALL USERS:", allUsers);

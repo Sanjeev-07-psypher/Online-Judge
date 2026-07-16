@@ -25,6 +25,12 @@ const submissionSchema = new mongoose.Schema(
             required: true,
         },
 
+        status: {
+            type: String,
+            enum: ["Pending", "Running", "Completed"],
+            default: "Pending",
+        },
+
         verdict: {
             type: String,
             enum: [
