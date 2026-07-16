@@ -1,61 +1,55 @@
 import Problem from "../models/Problem.js";
 import Submission from "../models/Submission.js";
 
-import { executeCpp } from "../utils/executeCpp.js";
+import { createCppRunner } from "../utils/dockerCppRunner.js";
 import { compareOutput } from "../utils/compareOutput.js";
 
-export const judgeSubmission = async (submissionId) => {
-    const submission = await Submission.findById(
-        submissionId
-    );
+export const judgeSubmission = async (
+    submissionId
+) => {
+    const submission =
+        await Submission.findById(
+            submissionId
+        );
 
     if (!submission) {
-        throw new Error("Submission not found");
+        throw new Error(
+            "Submission not found"
+        );
     }
 
-    const problem = await Problem.findById(
-        submission.problem
-    );
+    const problem =
+        await Problem.findById(
+            submission.problem
+        );
 
     if (!problem) {
-        throw new Error("Problem not found");
+        throw new Error(
+            "Problem not found"
+        );
     }
 
-    const testCases = problem.testCases;
+    const testCases =
+        problem.testCases;
 
     let passedTestCases = 0;
 
-    for (const testCase of testCases) {
-        const result = await executeCpp(
-            submission.code,
-            testCase.input
+    const runner =
+        await createCppRunner(
+            submission.code
         );
 
-        if (!result.success) {
-            submission.verdict = result.verdict;
+    try {
+        const compileResult =
+            await runner.compile();
 
-            submission.passedTestCases =
-                passedTestCases;
-
-            submission.totalTestCases =
-                testCases.length;
-
-            await submission.save();
-
-            return submission;
-        }
-
-        const isCorrect = compareOutput(
-            testCase.output,
-            result.output
-        );
-
-        if (!isCorrect) {
+        if (
+            !compileResult.success
+        ) {
             submission.verdict =
-                "Wrong Answer";
+                compileResult.verdict;
 
-            submission.passedTestCases =
-                passedTestCases;
+            submission.passedTestCases = 0;
 
             submission.totalTestCases =
                 testCases.length;
@@ -65,18 +59,64 @@ export const judgeSubmission = async (submissionId) => {
             return submission;
         }
 
-        passedTestCases++;
+        for (const testCase of testCases) {
+            const result =
+                await runner.run(
+                    testCase.input
+                );
+
+            if (!result.success) {
+                submission.verdict =
+                    result.verdict;
+
+                submission.passedTestCases =
+                    passedTestCases;
+
+                submission.totalTestCases =
+                    testCases.length;
+
+                await submission.save();
+
+                return submission;
+            }
+
+            const isCorrect =
+                compareOutput(
+                    testCase.output,
+                    result.output
+                );
+
+            if (!isCorrect) {
+                submission.verdict =
+                    "Wrong Answer";
+
+                submission.passedTestCases =
+                    passedTestCases;
+
+                submission.totalTestCases =
+                    testCases.length;
+
+                await submission.save();
+
+                return submission;
+            }
+
+            passedTestCases++;
+        }
+
+        submission.verdict =
+            "Accepted";
+
+        submission.passedTestCases =
+            passedTestCases;
+
+        submission.totalTestCases =
+            testCases.length;
+
+        await submission.save();
+
+        return submission;
+    } finally {
+        await runner.cleanup();
     }
-
-    submission.verdict = "Accepted";
-
-    submission.passedTestCases =
-        passedTestCases;
-
-    submission.totalTestCases =
-        testCases.length;
-
-    await submission.save();
-
-    return submission;
 };
