@@ -12,7 +12,12 @@ export const createSubmission = async (req, res) => {
             language,
         });
 
-        await judgeSubmission(submission._id);
+        await submissionQueue.add(
+            "judge-submission",
+            {
+                submissionId: submission._id,
+            }
+        );
 
         const updatedSubmission = await Submission.findById(
             submission._id
