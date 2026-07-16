@@ -23,6 +23,11 @@ const worker = new Worker(
                 }
             );
 
+            // Uncomment for Bull Board testing of active, pending
+            // await new Promise((resolve) =>
+            //     setTimeout(resolve, 10000)
+            // );
+
             await judgeSubmission(submissionId);
 
             await Submission.findByIdAndUpdate(
@@ -52,6 +57,9 @@ const worker = new Worker(
 
     {
         connection: redisConnection,
+
+        // Number of jobs processed simultaneously
+        concurrency: 5,
     }
 );
 
