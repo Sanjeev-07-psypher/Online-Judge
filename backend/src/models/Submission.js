@@ -46,7 +46,12 @@ const submissionSchema = new mongoose.Schema(
 
         executionTime: {
             type: Number,
-            default: 0,
+            default: null,
+        },
+
+        memoryUsed: {
+            type: Number,
+            default: null,
         },
 
         passedTestCases: {
