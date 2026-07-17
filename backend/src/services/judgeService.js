@@ -36,6 +36,8 @@ export const judgeSubmission = async (
 
     let totalExecutionTime = 0;
 
+    let peakMemoryUsed = 0;
+
     const runner =
         await createCppRunner(
             submission.code
@@ -52,6 +54,9 @@ export const judgeSubmission = async (
                 compileResult.verdict;
 
             submission.executionTime =
+                null;
+
+            submission.memoryUsed =
                 null;
 
             submission.passedTestCases = 0;
@@ -73,12 +78,25 @@ export const judgeSubmission = async (
             totalExecutionTime +=
                 result.executionTime || 0;
 
+            peakMemoryUsed =
+                Math.max(
+                    peakMemoryUsed,
+                    result.memoryUsed || 0
+                );
+
             if (!result.success) {
                 submission.verdict =
                     result.verdict;
 
                 submission.executionTime =
                     totalExecutionTime;
+
+                submission.memoryUsed =
+                    Number(
+                        peakMemoryUsed.toFixed(
+                            2
+                        )
+                    );
 
                 submission.passedTestCases =
                     passedTestCases;
@@ -104,6 +122,13 @@ export const judgeSubmission = async (
                 submission.executionTime =
                     totalExecutionTime;
 
+                submission.memoryUsed =
+                    Number(
+                        peakMemoryUsed.toFixed(
+                            2
+                        )
+                    );
+
                 submission.passedTestCases =
                     passedTestCases;
 
@@ -123,6 +148,13 @@ export const judgeSubmission = async (
 
         submission.executionTime =
             totalExecutionTime;
+
+        submission.memoryUsed =
+            Number(
+                peakMemoryUsed.toFixed(
+                    2
+                )
+            );
 
         submission.passedTestCases =
             passedTestCases;

@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import problemRoutes from "./routes/problemRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
+import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 
 import { serverAdapter } from "./config/bullBoard.js";
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 app.use(
     "/admin/queues",
