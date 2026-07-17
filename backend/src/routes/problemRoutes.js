@@ -6,6 +6,7 @@ import {
     getProblemById,
     updateProblem,
     deleteProblem,
+    getProblemStats,
 } from "../controllers/problemController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -19,6 +20,11 @@ router.get("/", getProblems);
 router.get("/test", (req, res) => {
     res.json({ message: "problem routes working" });
 });
+
+router.get(
+    "/:id/stats",
+    getProblemStats
+);
 
 router.get("/:id", getProblemById);
 
