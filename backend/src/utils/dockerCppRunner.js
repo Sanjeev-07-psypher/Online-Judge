@@ -175,6 +175,16 @@ export const createCppRunner = async (
                         startTime
                 ) / 1000000;
 
+            const stats =
+                await container.stats({
+                    stream: false,
+                });
+
+            const memoryUsed =
+                stats.memory_stats
+                    .usage /
+                (1024 * 1024);
+
             try {
                 fs.unlinkSync(
                     inputFilePath
@@ -194,6 +204,12 @@ export const createCppRunner = async (
                         Math.round(
                             executionTime
                         ),
+                    memoryUsed:
+                        Number(
+                            memoryUsed.toFixed(
+                                2
+                            )
+                        ),
                 };
             }
 
@@ -210,6 +226,12 @@ export const createCppRunner = async (
                         Math.round(
                             executionTime
                         ),
+                    memoryUsed:
+                        Number(
+                            memoryUsed.toFixed(
+                                2
+                            )
+                        ),
                 };
             }
 
@@ -220,6 +242,12 @@ export const createCppRunner = async (
                 executionTime:
                     Math.round(
                         executionTime
+                    ),
+                memoryUsed:
+                    Number(
+                        memoryUsed.toFixed(
+                            2
+                        )
                     ),
             };
         },

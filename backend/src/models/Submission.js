@@ -69,6 +69,18 @@ const submissionSchema = new mongoose.Schema(
     }
 );
 
+// Leaderboard indexes
+
+submissionSchema.index({
+    verdict: 1,
+});
+
+submissionSchema.index({
+    user: 1,
+    problem: 1,
+    verdict: 1,
+});
+
 const Submission = mongoose.model(
     "Submission",
     submissionSchema
