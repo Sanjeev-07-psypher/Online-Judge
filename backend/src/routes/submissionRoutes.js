@@ -3,6 +3,10 @@ import express from "express";
 import protect from "../middleware/authMiddleware.js";
 
 import {
+    submissionLimiter,
+} from "../middleware/rateLimitMiddleware.js";
+
+import {
     createSubmission,
     getMySubmissions,
     getSubmissionById,
@@ -11,7 +15,7 @@ import {
 
 const router = express.Router();
 
-router.post("/", protect, createSubmission);
+router.post("/", submissionLimiter, protect, createSubmission);
 
 router.get("/my", protect, getMySubmissions);
 
