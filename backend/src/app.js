@@ -8,11 +8,15 @@ import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 import { serverAdapter } from "./config/bullBoard.js";
+import {
+    generalLimiter,
+} from "./middleware/rateLimitMiddleware.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(generalLimiter);
 
 app.get("/", (req, res) => {
     res.status(200).json({
