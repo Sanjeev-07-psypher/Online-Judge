@@ -158,10 +158,22 @@ export const createCppRunner = async (
                 input
             );
 
+            const startTime =
+                process.hrtime.bigint();
+
             const result =
                 await execCommand(
                     `timeout 2s /workspace/${executableName} < /workspace/${jobId}.txt`
                 );
+
+            const endTime =
+                process.hrtime.bigint();
+
+            const executionTime =
+                Number(
+                    endTime -
+                        startTime
+                ) / 1000000;
 
             try {
                 fs.unlinkSync(
@@ -178,6 +190,10 @@ export const createCppRunner = async (
                         "Time Limit Exceeded",
                     error:
                         "Execution exceeded time limit",
+                    executionTime:
+                        Math.round(
+                            executionTime
+                        ),
                 };
             }
 
@@ -190,6 +206,10 @@ export const createCppRunner = async (
                         "Runtime Error",
                     error:
                         result.stderr,
+                    executionTime:
+                        Math.round(
+                            executionTime
+                        ),
                 };
             }
 
@@ -197,6 +217,10 @@ export const createCppRunner = async (
                 success: true,
                 output:
                     result.stdout,
+                executionTime:
+                    Math.round(
+                        executionTime
+                    ),
             };
         },
 

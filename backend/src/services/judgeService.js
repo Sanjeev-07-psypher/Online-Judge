@@ -34,6 +34,8 @@ export const judgeSubmission = async (
 
     let passedTestCases = 0;
 
+    let totalExecutionTime = 0;
+
     const runner =
         await createCppRunner(
             submission.code
@@ -48,6 +50,9 @@ export const judgeSubmission = async (
         ) {
             submission.verdict =
                 compileResult.verdict;
+
+            submission.executionTime =
+                null;
 
             submission.passedTestCases = 0;
 
@@ -65,9 +70,15 @@ export const judgeSubmission = async (
                     testCase.input
                 );
 
+            totalExecutionTime +=
+                result.executionTime || 0;
+
             if (!result.success) {
                 submission.verdict =
                     result.verdict;
+
+                submission.executionTime =
+                    totalExecutionTime;
 
                 submission.passedTestCases =
                     passedTestCases;
@@ -90,6 +101,9 @@ export const judgeSubmission = async (
                 submission.verdict =
                     "Wrong Answer";
 
+                submission.executionTime =
+                    totalExecutionTime;
+
                 submission.passedTestCases =
                     passedTestCases;
 
@@ -106,6 +120,9 @@ export const judgeSubmission = async (
 
         submission.verdict =
             "Accepted";
+
+        submission.executionTime =
+            totalExecutionTime;
 
         submission.passedTestCases =
             passedTestCases;
