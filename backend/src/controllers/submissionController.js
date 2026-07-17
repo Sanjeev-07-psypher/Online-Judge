@@ -103,8 +103,8 @@ export const getRecentSubmissions = async (req, res) => {
                 .skip(skip)
                 .limit(limit)
                 .select(
-    "user problem language verdict executionTime memoryUsed passedTestCases totalTestCases createdAt"
-);
+                    "user problem language verdict executionTime memoryUsed passedTestCases totalTestCases createdAt"
+                );
 
         return res.status(200).json({
             success: true,
