@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes.js";
 import problemRoutes from "./routes/problemRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 import { serverAdapter } from "./config/bullBoard.js";
 
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/problems", problemRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(
     "/admin/queues",
