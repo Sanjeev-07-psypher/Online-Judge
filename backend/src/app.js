@@ -8,9 +8,12 @@ import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 import { serverAdapter } from "./config/bullBoard.js";
+
 import {
     generalLimiter,
 } from "./middleware/rateLimitMiddleware.js";
+
+import errorMiddleware from "./middleware/errorMiddleware.js";
 
 const app = express();
 
@@ -35,6 +38,8 @@ app.use(
     "/admin/queues",
     serverAdapter.getRouter()
 );
+
+app.use(errorMiddleware);
 
 console.log("App loaded");
 
