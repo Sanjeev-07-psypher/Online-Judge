@@ -11,6 +11,7 @@ import {
     getMySubmissions,
     getSubmissionById,
     getRecentSubmissions,
+    getSubmissionAnalysis,
 } from "../controllers/submissionController.js";
 
 const router = express.Router();
@@ -20,6 +21,12 @@ router.post("/", submissionLimiter, protect, createSubmission);
 router.get("/my", protect, getMySubmissions);
 
 router.get("/recent", getRecentSubmissions);
+
+router.get(
+    "/:id/analysis",
+    protect,
+    getSubmissionAnalysis
+);
 
 router.get("/:id", protect, getSubmissionById);
 

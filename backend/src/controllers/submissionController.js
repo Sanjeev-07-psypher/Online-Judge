@@ -107,6 +107,34 @@ export const getSubmissionById =
         }
     );
 
+
+export const getSubmissionAnalysis =
+    asyncHandler(
+        async (req, res) => {
+            const submission =
+                await Submission.findById(
+                    req.params.id
+                );
+
+            if (!submission) {
+                throw new AppError(
+                    "Submission not found",
+                    404
+                );
+            }
+
+            return res
+                .status(200)
+                .json({
+                    success: true,
+                    aiAnalysisStatus:
+                        submission.aiAnalysisStatus,
+                    aiAnalysis:
+                        submission.aiAnalysis,
+                });
+        }
+    );
+
 export const getRecentSubmissions =
     asyncHandler(
         async (req, res) => {
@@ -157,7 +185,7 @@ export const getRecentSubmissions =
                     totalPages:
                         Math.ceil(
                             totalSubmissions /
-                                limit
+                            limit
                         ),
                     submissions,
                 });
