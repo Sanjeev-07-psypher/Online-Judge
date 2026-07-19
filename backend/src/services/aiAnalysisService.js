@@ -2,6 +2,7 @@ import Submission from "../models/Submission.js";
 import ai from "../config/gemini.js";
 import buildAnalysisPrompt from "../utils/buildAnalysisPrompt.js";
 import complexityAnalyzer from "../utils/complexityAnalyzer.js";
+import generateOptimizationHints from "../utils/optimizationHints.js";
 
 const analyzeSubmission = async (
     submissionId
@@ -20,6 +21,12 @@ const analyzeSubmission = async (
     const complexity =
         complexityAnalyzer(
             submission.code
+        );
+
+    const optimizationHints =
+        generateOptimizationHints(
+            submission.code,
+            complexity.estimatedComplexity
         );
 
     submission.estimatedComplexity =
@@ -45,6 +52,7 @@ const analyzeSubmission = async (
                 complexity.estimatedComplexity,
             optimizedComplexity:
                 complexity.optimizedComplexity,
+            optimizationHints,
         });
 
     const response =
@@ -86,6 +94,9 @@ const analyzeSubmission = async (
 
     analysis.optimizedComplexity =
         complexity.optimizedComplexity;
+
+    analysis.optimizationHints =
+        optimizationHints;
 
     return analysis;
 };
