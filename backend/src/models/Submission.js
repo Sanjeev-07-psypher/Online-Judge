@@ -70,6 +70,8 @@ const submissionSchema = new mongoose.Schema(
                 explanation: String,
                 suggestions: [String],
                 complexityFeedback: String,
+                estimatedComplexity: String,
+                optimizedComplexity: String,
             },
             default: null,
         },
@@ -83,6 +85,16 @@ const submissionSchema = new mongoose.Schema(
                 "Failed",
             ],
             default: "Pending",
+        },
+
+        estimatedComplexity: {
+            type: String,
+            default: null,
+        },
+
+        optimizedComplexity: {
+            type: String,
+            default: null,
         },
     },
     {
