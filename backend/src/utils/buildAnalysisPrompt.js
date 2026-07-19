@@ -4,6 +4,8 @@ const buildAnalysisPrompt = ({
     code,
     executionTime,
     memoryUsed,
+    estimatedComplexity,
+    optimizedComplexity,
 }) => {
     return `
 You are an expert competitive programming mentor.
@@ -15,21 +17,25 @@ Language: ${language}
 Execution Time: ${executionTime ?? "N/A"} ms
 Memory Used: ${memoryUsed ?? "N/A"} MB
 
+Estimated Time Complexity:
+${estimatedComplexity}
+
+Suggested Better Complexity:
+${optimizedComplexity}
+
 Code:
 ${code}
 
 Return ONLY valid JSON.
 
 {
-  "summary": "short summary",
-  "issue": "main issue",
-  "explanation": "detailed explanation",
-  "suggestions": [
-    "suggestion 1",
-    "suggestion 2",
-    "suggestion 3"
-  ],
-  "complexityFeedback": "time complexity feedback"
+  "summary": "",
+  "issue": "",
+  "explanation": "",
+  "suggestions": [],
+  "complexityFeedback": "",
+  "estimatedComplexity": "",
+  "optimizedComplexity": ""
 }
 
 Rules:
@@ -37,18 +43,14 @@ Rules:
 1. Return JSON only.
 2. No markdown.
 3. No code fences.
-4. suggestions must be an array.
-5. If verdict is Accepted:
-   - praise correctness
-   - discuss possible optimizations.
-6. If verdict is Wrong Answer:
-   - identify likely logical mistakes.
-7. If verdict is Runtime Error:
-   - explain possible crash reasons.
-8. If verdict is Compilation Error:
-   - explain compilation issues.
-9. If verdict is Time Limit Exceeded:
-   - explain performance bottlenecks.
+4. suggestions must be array.
+5. Explain why estimated complexity was detected.
+6. Explain whether better complexity is possible.
+7. If verdict is Accepted, discuss optimization opportunities.
+8. If verdict is Wrong Answer, focus on logic mistakes.
+9. If verdict is Runtime Error, explain crash causes.
+10. If verdict is Compilation Error, explain compile issues.
+11. If verdict is Time Limit Exceeded, focus heavily on complexity improvements.
 `;
 };
 
