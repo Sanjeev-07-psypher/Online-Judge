@@ -1,6 +1,8 @@
 import Problem from "../models/Problem.js";
 import Submission from "../models/Submission.js";
 
+import aiAnalysisQueue from "../queues/aiAnalysisQueue.js";
+
 import { createCppRunner } from "../utils/dockerCppRunner.js";
 import { compareOutput } from "../utils/compareOutput.js";
 
@@ -28,6 +30,17 @@ export const judgeSubmission = async (
             "Problem not found"
         );
     }
+
+    const enqueueAIAnalysis =
+        async (submissionId) => {
+            await aiAnalysisQueue.add(
+                "analyze-submission",
+                {
+                    submissionId:
+                        submissionId.toString(),
+                }
+            );
+        };
 
     const testCases =
         problem.testCases;
@@ -65,6 +78,10 @@ export const judgeSubmission = async (
                 testCases.length;
 
             await submission.save();
+
+            await enqueueAIAnalysis(
+                submission._id
+            );
 
             return submission;
         }
@@ -106,6 +123,10 @@ export const judgeSubmission = async (
 
                 await submission.save();
 
+                await enqueueAIAnalysis(
+                    submission._id
+                );
+
                 return submission;
             }
 
@@ -137,6 +158,10 @@ export const judgeSubmission = async (
 
                 await submission.save();
 
+                await enqueueAIAnalysis(
+                    submission._id
+                );
+
                 return submission;
             }
 
@@ -163,6 +188,10 @@ export const judgeSubmission = async (
             testCases.length;
 
         await submission.save();
+
+        await enqueueAIAnalysis(
+            submission._id
+        );
 
         return submission;
     } finally {

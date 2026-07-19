@@ -8,6 +8,7 @@ import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 import { serverAdapter } from "./config/bullBoard.js";
+import setupSwagger from "./config/swagger.js";
 
 import {
     generalLimiter,
@@ -38,6 +39,8 @@ app.use(
     "/admin/queues",
     serverAdapter.getRouter()
 );
+
+setupSwagger(app);
 
 app.use(errorMiddleware);
 
