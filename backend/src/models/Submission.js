@@ -63,6 +63,27 @@ const submissionSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
+        aiAnalysis: {
+            type: {
+                summary: String,
+                issue: String,
+                explanation: String,
+                suggestions: [String],
+                complexityFeedback: String,
+            },
+            default: null,
+        },
+
+        aiAnalysisStatus: {
+            type: String,
+            enum: [
+                "Pending",
+                "Processing",
+                "Completed",
+                "Failed",
+            ],
+            default: "Pending",
+        },
     },
     {
         timestamps: true,
