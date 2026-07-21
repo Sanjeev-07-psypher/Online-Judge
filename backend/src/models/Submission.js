@@ -72,6 +72,7 @@ const submissionSchema = new mongoose.Schema(
                 complexityFeedback: String,
                 estimatedComplexity: String,
                 optimizedComplexity: String,
+                optimizationHints: [String],
             },
             default: null,
         },

@@ -1,18 +1,27 @@
-//authService acts as a middle layer between React components and backend authentication APIs.
-import api from "../api/axios";
+import apiClient from "./apiClient";
 
-export const registerUser = (data) =>{
-    return api.post("/auth/register",data);
-}
+export const loginUser = async (credentials) => {
+  const response = await apiClient.post(
+    "/auth/login",
+    credentials
+  );
 
-export const loginUser = (data) =>{
-    return api.post("/auth/login",data);
-}
+  return response.data;
+};
 
-export const logoutUser = () =>{
-    return api.post("/auth/logout");
-}
+export const registerUser = async (userData) => {
+  const response = await apiClient.post(
+    "/auth/register",
+    userData
+  );
 
-export const getCurrentUser = () =>{
-    return api.get("/auth/me");
-}
+  return response.data;
+};
+
+export const getCurrentUser = async () => {
+  const response = await apiClient.get(
+    "/auth/me"
+  );
+
+  return response.data.user;
+};

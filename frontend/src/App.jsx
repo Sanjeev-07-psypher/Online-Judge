@@ -1,23 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from 'react';
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./routes/ProtectedRoute";
+import AppRouter from "./app/router/AppRouter";
 
 function App() {
-
-  return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path="/" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
-        </Routes>
-      </BrowserRouter>
-    </>
-  )
+  return <AppRouter />;
 }
 
 export default App;
